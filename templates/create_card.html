@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Create Your Bingo Card</h1>
+
+<p>You can only create one card. Once created you cannot edit the text.</p>
+
+<form method="post">
+    {% csrf_token %}
+
+    <style>
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat({{ board_size }}, 1fr);
+            gap: 4px;
+            max-width: 550px;
+        }
+
+        .cell {
+            border: 1px solid #333;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cell input[type="text"] {
+            width: 100%;
+            height: 100%;
+            border: none;
+            text-align: center;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .free {
+            background: #eee;
+            font-weight: bold;
+        }
+    </style>
+
+    <div class="card-grid">
+        {% for row in grid %}
+            {% for cell in row %}
+                {% if cell.is_free %}
+                    <div class="cell free">FREE</div>
+                {% else %}
+                    <div class="cell">
+                        {{ cell.field }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    <br>
+    <button type="submit">Create Card</button>
+</form>
+
+{% endblock %}

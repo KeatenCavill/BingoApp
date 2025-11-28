@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bingo App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        nav a { margin-right: 10px; }
+        table.bingo { border-collapse: collapse; margin-top: 20px; }
+        table.bingo td {
+            border: 1px solid #333;
+            width: 80px;
+            height: 80px;
+            text-align: center;
+            vertical-align: middle;
+            padding: 5px;
+        }
+        .marked {
+            text-decoration: line-through;
+            font-weight: bold;
+        }
+        .free {
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="{% url 'leaderboard' %}">Leaderboard</a>
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'my_card' %}">My Card</a>
+
+        {% if user.is_superuser %}
+            <a href="{% url 'admin_controls' %}">Game Settings</a>
+        {% endif %}
+
+        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Logout ({{ user.username }})</button>
+        </form>
+    {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'signup' %}">Sign Up</a>
+    {% endif %}
+</nav>
+<hr>
+
+{% block content %}{% endblock %}
+</body>
+</html>

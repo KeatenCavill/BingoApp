@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Leaderboard</h1>
+
+<table>
+    <tr>
+        <th>Rank</th>
+        <th>Player</th>
+        <th>Filled Squares</th>
+    </tr>
+    {% for card in cards %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>
+            <a href="{% url 'public_card' card.user.username %}">
+                {{ card.user.username }}
+            </a>
+        </td>
+        <td>{{ card.filled_count }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="3">No cards yet.</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

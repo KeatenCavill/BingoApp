@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Game Settings (Superuser)</h1>
+
+{% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<h2>Reset All Cards</h2>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" name="action" value="reset_cards">
+        Reset ALL cards
+    </button>
+</form>
+
+<hr>
+
+<h2>Reset a Specific User's Card</h2>
+<form method="post">
+    {% csrf_token %}
+    <label for="user_card_id">Choose a user:</label>
+    <select name="user_card_id" id="user_card_id">
+        {% for card in cards_with_users %}
+            <option value="{{ card.id }}">{{ card.user.username }}</option>
+        {% empty %}
+            <option disabled>No users have cards yet</option>
+        {% endfor %}
+    </select>
+    <button type="submit" name="action" value="reset_user">
+        Reset selected card
+    </button>
+</form>
+
+<hr>
+
+<h2>Board Size</h2>
+<p>Current size: {{ config.board_size }} × {{ config.board_size }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    {% for size, label in board_sizes %}
+        <label>
+            <input type="radio" name="board_size" value="{{ size }}"
+                   {% if size == config.board_size %}checked{% endif %}>
+            {{ label }}
+        </label><br>
+    {% endfor %}
+    <button type="submit" name="action" value="change_size">
+        Update board size
+    </button>
+</form>
+{% endblock %}

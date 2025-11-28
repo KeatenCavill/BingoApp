@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ card.user.username }}'s Card</h1>
+
+<p>Read-only view. You can’t mark anything here.</p>
+
+<table class="bingo">
+    {% for row in grid %}
+    <tr>
+        {% for cell in row %}
+        <td class="{% if cell.is_free %}free{% endif %}">
+            <span class="{% if cell.is_marked %}marked{% endif %}">
+                {{ cell.text }}
+                {% if cell.is_marked and not cell.is_free %}<br>X{% endif %}
+            </span>
+        </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
